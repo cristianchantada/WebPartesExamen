@@ -16,16 +16,17 @@
 <body>
 
 <%
+
+
+System.out.println(request.getParameter("empleado"));
+
 EmpleadoDao empleadoDao = new EmpleadoDao();
-List<Empleado> listaEmpleados = new ArrayList<>();
-listaEmpleados = empleadoDao.getAll();
-String clienteNif = request.getParameter("cliente");
-String empleadoNif = request.getParameter("empleado");
-String vehiculoMatricula = request.getParameter("vehiculo");
-String obraDescripcion = request.getParameter("obra");
-String localizacion = request.getParameter("localizacion");
-String fecha = request.getParameter("fecha");
-String materiales = request.getParameter("materiales");
+ParteDao parteDao = new ParteDao();
+Empleado empleado = new Empleado(request.getParameter("empleado"));
+empleado = empleadoDao.get(empleado);
+
+List<Parte> listaPartes = new ArrayList<>();
+listaPartes = parteDao.getParteByEmployeeId(empleado);
 
 %>
 
@@ -38,24 +39,34 @@ String materiales = request.getParameter("materiales");
       <th colspan="2">Consulta trabajos empleado</th></tr>
     <tr>
       <td>NIF del empleado : </td>
-      <td>00000032D</td>
+      <td><%= empleado.getNif() %></td>
     </tr>
     <tr>
       <td>Nombre:</td>
-      <td>N00000000</td>
+      <td><%= empleado.getNombre() %></td>
     </tr>
     <tr>
       <td>Trabajos realizados:</td>
       <td>&nbsp;</td>
     </tr>
+    
+    <%
+    	int i = 1;
+    	for(Parte parte : listaPartes){
+
+    %>
+    
     <tr>
-      <td>1: 0000-00-00 </td>
-      <td>Revision TV del Salon de Actos</td>
+    	<td><%= i++ %>.- <strong>Id del parte:</strong> <%= parte.getId() %> </td>
+      <td><strong>Fecha: </strong><%= parte.getFecha() %> </td>
+      <td><strong>Servicio realizado:</strong> <%= parte.getServicioDescription() %></td>
     </tr>
+    <% } %>
     <tr>
       <td colspan="2" align="center"><input type="button" name="Enviar" id="Enviar" value="Volver" onClick="javascritp:window.history.back();"></td>
     </tr>
   </table>
+  	
 </form>
 </body>
 </html>

@@ -49,6 +49,11 @@ public class EmpleadoDao implements DaoInterface<Empleado> {
         } finally {
         	closeConnection();
         }
+        
+        
+        System.out.println("Empleado GetNombre() = "  + empleado.getNombre());
+        
+        
         return newEmpleado;
     }
 
