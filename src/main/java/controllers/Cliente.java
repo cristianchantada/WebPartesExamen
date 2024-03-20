@@ -71,5 +71,16 @@ public class Cliente {
 		}
 		return false;
 	}
+	
+	public static String clienteExisteNifReturn(String nif, List<Cliente> lc) {
+		if (lc != null) {
+			for (Cliente c : lc) {
+				if (nif.equals(c.nif))
+					return nif;
+			}
+			return "";
+		}
+		return "";
+	}
 
 }

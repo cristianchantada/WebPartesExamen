@@ -1,7 +1,6 @@
 package controllers;
 
 import static controllers.Mensaje.verMensaje;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,6 +28,7 @@ public class Validator {
 
 	public static boolean validateNifAlgorithm(String nif) {
 		nif = nif.replaceAll("\\s", "").replaceAll("-", "");
+		System.out.println(nif);
 
 		String[] lettersTable = { "T", "R", "W", "A", "G", "M", "Y", "F", "P", "D", "X", "B", "N", "J", "Z", "S", "Q",
 				"V", "H", "L", "C", "K", "E" };

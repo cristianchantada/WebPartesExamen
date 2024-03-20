@@ -126,6 +126,9 @@ public class ClienteDao implements DaoInterface<Cliente> {
 	        return;
 	    }
 	    
+	    System.out.println("Id del cliente viejo en update() = " + cliente.getNif());
+	    System.out.println("NUEVO NIF = " + params[3]);
+	    
 	    String sql = "UPDATE clientes SET nombre = ?, email = ?, telefono = ?, nif = ? WHERE nif = ?";
 	    try {
 	         preparedStatement = conn.prepareStatement(sql);
