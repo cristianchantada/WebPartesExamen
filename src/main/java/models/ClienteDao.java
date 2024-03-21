@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import controllers.Cliente;
+import controllers.Empleado;
 import controllers.Mensaje;
 
 public class ClienteDao implements DaoInterface<Cliente> {
@@ -94,7 +95,64 @@ public class ClienteDao implements DaoInterface<Cliente> {
 		}
 		return listaClientes;
 	}
-
+	
+	
+	public Cliente getClientByEmail(String email) {
+		Cliente newClient = new Cliente();
+		String sql = "SELECT * FROM clientes WHERE email = ?";
+		try {
+			preparedStatement = conn.prepareStatement(sql);
+			preparedStatement.setString(1, email);
+			rs = preparedStatement.executeQuery();
+			if (rs.next()) {
+				newClient = new Cliente(
+						rs.getString("nif")
+						, rs.getString("nombre")
+						, rs.getString("telefono")
+						, rs.getString("password"));
+				
+				LocalTime clientLocalTime = rs.getTime("accessTime")
+				
+				
+				
+			} else {
+				System.out.println("No se encontró ningún empleado con el NIF proporcionado.");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+		return newClient;
+	}
+	
+	public Cliente setClientAccessTime(String email) {
+		Cliente newClient = new Cliente();
+		String sql = "SELECT * FROM clientes WHERE email = ?";
+		try {
+			preparedStatement = conn.prepareStatement(sql);
+			preparedStatement.setString(1, email);
+			rs = preparedStatement.executeQuery();
+			if (rs.next()) {
+				newClient = new Cliente(
+						rs.getString("nif")
+						, rs.getString("nombre")
+						, rs.getString("telefono")
+						, rs.getString("password"));
+				
+				LocalTime clientLocalTime = rs.getTime("accessTime")
+				
+				
+				
+			} else {
+				System.out.println("No se encontró ningún empleado con el NIF proporcionado.");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+		return newClient;
+	}
+	
 	@Override
 	public void save(Cliente cliente) {
 		String sql = "INSERT INTO clientes (nif, nombre, email, telefono) VALUES (?, ?, ?, ?)";
@@ -140,9 +198,7 @@ public class ClienteDao implements DaoInterface<Cliente> {
 	        
 	        rowsAffected = preparedStatement.executeUpdate();
 
-	        if (rowsAffected > 0) {
-	            Mensaje.verMensaje("Cliente actualizado correctamente");
-	        } else {
+	        if (rowsAffected <= 0) {
 	            Mensaje.verMensaje("No se encontró ningún cliente con el NIF proporcionado");
 	        }
 	    } catch (SQLException e) {
@@ -172,7 +228,6 @@ public class ClienteDao implements DaoInterface<Cliente> {
 	        closeConnection();
 	    }
 	}
-
 
 	public void closeConnection() {
 		try {

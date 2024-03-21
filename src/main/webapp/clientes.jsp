@@ -13,7 +13,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="./styles/style.css">
+<link rel="stylesheet" href="style.css">
     <script>
         function reloadPage() {
             location.reload();

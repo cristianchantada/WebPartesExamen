@@ -1,5 +1,6 @@
 package controllers;
 
+import java.time.LocalTime;
 import java.util.List;
 
 public class Cliente {
@@ -8,6 +9,8 @@ public class Cliente {
 	private String nombre;
 	private String email;
 	private String telefono;
+	private String password;
+	private LocalTime accessTime;
 
 	public Cliente() {
 	}
@@ -16,11 +19,16 @@ public class Cliente {
 		this.nif = nif;
 	}
 
-	public Cliente(String nif, String nombre, String email, String telefono) {
+	public Cliente(String nif, String nombre, String telefono, String password) {
 		this(nif);
 		this.nombre = nombre;
-		this.email = email;
+		this.password = password;
 		this.telefono = telefono;
+	}
+	
+	public Cliente(String nif, String nombre, String telefono, String password, LocalTime accessTime) {
+		this(nif, nombre, telefono, password);
+		this.accessTime = accessTime;
 	}
 
 	public String getNombre() {
@@ -53,6 +61,30 @@ public class Cliente {
 
 	public void setTelefono(String telefono) {
 		this.telefono = telefono;
+	}
+	
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public LocalTime getAccessTime() {
+		return accessTime;
+	}
+
+	public void setAccessTime(LocalTime accessTime) {
+		this.accessTime = accessTime;
 	}
 
 	@Override

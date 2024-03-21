@@ -12,6 +12,9 @@ public class Empleado implements Serializable {
 	private String correo;
 	private String telefono;
 	private String codigo;
+	private String password;
+	
+	public Empleado() {}
 
 	public Empleado(String nif) {
 		this.nif = nif;
@@ -24,6 +27,12 @@ public class Empleado implements Serializable {
 		this.telefono = tlf;
 		this.codigo = codigoOperario;
 	}
+	
+	public Empleado(String nif, String name, String tlf, String mail, String codigoOperario, String password) {
+		this(nif, name, tlf, mail,codigoOperario);
+		this.password = password;
+	}
+
 
 	@Override
 	public String toString() {
@@ -79,5 +88,12 @@ public class Empleado implements Serializable {
 		this.codigo = codigo;
 	}
 	
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
 	
 }
