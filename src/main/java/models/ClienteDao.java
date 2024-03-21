@@ -3,10 +3,11 @@ package models;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.time.LocalTime;
 import controllers.Cliente;
 import controllers.Empleado;
 import controllers.Mensaje;
+import java.sql.Time;
 
 public class ClienteDao implements DaoInterface<Cliente> {
 
@@ -109,12 +110,9 @@ public class ClienteDao implements DaoInterface<Cliente> {
 						rs.getString("nif")
 						, rs.getString("nombre")
 						, rs.getString("telefono")
-						, rs.getString("password"));
-				
-				LocalTime clientLocalTime = rs.getTime("accessTime")
-				
-				
-				
+						, rs.getString("password")
+						, rs.getTime("accessTime").toLocalTime()
+				);
 			} else {
 				System.out.println("No se encontró ningún empleado con el NIF proporcionado.");
 			}
@@ -125,32 +123,23 @@ public class ClienteDao implements DaoInterface<Cliente> {
 		return newClient;
 	}
 	
-	public Cliente setClientAccessTime(String email) {
-		Cliente newClient = new Cliente();
-		String sql = "SELECT * FROM clientes WHERE email = ?";
-		try {
-			preparedStatement = conn.prepareStatement(sql);
-			preparedStatement.setString(1, email);
-			rs = preparedStatement.executeQuery();
-			if (rs.next()) {
-				newClient = new Cliente(
-						rs.getString("nif")
-						, rs.getString("nombre")
-						, rs.getString("telefono")
-						, rs.getString("password"));
-				
-				LocalTime clientLocalTime = rs.getTime("accessTime")
-				
-				
-				
-			} else {
-				System.out.println("No se encontró ningún empleado con el NIF proporcionado.");
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}		
-		return newClient;
+	public void setClientAccessTime(Cliente cliente) {
+	    String sql = "UPDATE clientes SET accesCounter = ? WHERE email = ?";
+	    try {
+	         preparedStatement = conn.prepareStatement(sql);
+	         preparedStatement.setInt(1, (cliente.getAccessCounter() + 1));
+	         preparedStatement.setString(2, cliente.getEmail());
+
+	         rowsAffected = preparedStatement.executeUpdate();
+
+	        if (rowsAffected <= 0) {
+	            Mensaje.verMensaje("No se encontró ningún cliente con el email proporcionado");
+	        }
+	    } catch (SQLException e) {
+	        System.out.println("Error al actualizar el cliente en ClienteDao: " + e.getMessage());
+	    } finally {
+	        closeConnection();
+	    }
 	}
 	
 	@Override

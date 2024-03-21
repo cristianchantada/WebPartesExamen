@@ -11,6 +11,7 @@ public class Cliente {
 	private String telefono;
 	private String password;
 	private LocalTime accessTime;
+	private int accessCounter;
 
 	public Cliente() {
 	}
@@ -85,6 +86,16 @@ public class Cliente {
 
 	public void setAccessTime(LocalTime accessTime) {
 		this.accessTime = accessTime;
+	}
+	
+	
+
+	public int getAccessCounter() {
+		return accessCounter;
+	}
+
+	public void setAccessCounter(int accessCounter) {
+		this.accessCounter = accessCounter;
 	}
 
 	@Override
