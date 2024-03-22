@@ -3,8 +3,6 @@
 <%@ page import="java.sql.*"%>
 <%@ page import="java.time.LocalTime"%>
 <%@ page import="java.time.temporal.ChronoUnit"%>
-<%@ page import="java.util.List"%>
-<%@ page import="java.util.ArrayList"%>
 <%@ page import="controllers.*"%>
 <%@ page import="models.*"%>
 <%@ page import="java.io.IOException"%>
@@ -30,26 +28,20 @@
 
 		ClienteDao clienteDao = new ClienteDao();
 		Cliente cliente = new Cliente();
-		cliente.setAccessTime(LocalTime.now());
 		cliente = clienteDao.getClientByEmail(email);
+		LocalTime lastAccessTime = cliente.getAccessTime();
 
-		LocalTime localTimeNow = LocalTime.now();
+		long minutesDifference = lastAccessTime.until(LocalTime.now(), ChronoUnit.MINUTES);
 
-		long minutesDifference = lastAccessTime.until(localTimeNow, ChronoUnit.MINUTES);
-
-		if (cliente.getAccessCounter() >= 5 || minutesDifference < 2) {
-
-			if (password.equals(cliente.getPassword())) {
-		response.sendRedirect("home.jsp");
-		ClienteDao clienteDao2 = new ClienteDao();
-		cliente.setAccessCounter(0);
-		clienteDao2.update(cliente);
-			} else {
-		showWrongAccess = true;
-			}
+		if (cliente.getAccessCounter() >= 5 && minutesDifference < 2) {
+			showLimitAccess = true;
+		} else if (password.equals(cliente.getPassword())) {
+			response.sendRedirect("home.jsp");
+			ClienteDao clienteDao2 = new ClienteDao();
+			clienteDao2.updateAccessCounterToZero(cliente.getNif());
+		} else {
+			showWrongAccess = true;
 		}
-	} else {
-
 	}
 	%>
 	<div class="main-page-container">
@@ -61,7 +53,12 @@
 		</form>
 	</div>
 	<%
-	if (showWrongAccess) {
+	if (showLimitAccess) {
+	%>
+	<p>Se ha alcanzado el límite de intentos o debes esperar al menos 2
+		minutos entre intentos de acceso.</p>
+	<%
+	} else if (showWrongAccess) {
 	%>
 	<p>Email o contraseña incorrecta, por favor, inténtelo de nuevo</p>
 	<%

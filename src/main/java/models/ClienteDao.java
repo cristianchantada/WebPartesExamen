@@ -196,6 +196,23 @@ public class ClienteDao implements DaoInterface<Cliente> {
 	        closeConnection();
 	    }
 	}
+	
+	
+	public void updateAccessCounterToZero(String clientNif) {
+	    String sql = "UPDATE clientes SET accessCounter = 0  WHERE nif = ?";
+	    try {
+	         preparedStatement = conn.prepareStatement(sql);	    
+	        rowsAffected = preparedStatement.executeUpdate();
+
+	        if (rowsAffected <= 0) {
+	            Mensaje.verMensaje("No se encontró ningún cliente con el NIF proporcionado");
+	        }
+	    } catch (SQLException e) {
+	        System.out.println("Error al actualizar el cliente en ClienteDao: " + e.getMessage());
+	    } finally {
+	        closeConnection();
+	    }
+	}
 
 	@Override
 	public void delete(Cliente cliente) {
