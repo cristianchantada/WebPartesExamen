@@ -12,7 +12,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="stylesheet" href="login.css" />
+<link rel="stylesheet" href="index.css" />
 <title>Login partes</title>
 </head>
 <body>
@@ -29,16 +29,27 @@
 		ClienteDao clienteDao = new ClienteDao();
 		Cliente cliente = new Cliente();
 		cliente = clienteDao.getClientByEmail(email);
+		ClienteDao clienteDao2 = new ClienteDao();
+		clienteDao2.updateAccessCounter((cliente.getAccessCounter() + 1), cliente.getNif());
+
 		LocalTime lastAccessTime = cliente.getAccessTime();
+		
+		long minutesDifference = 0;
+		if (lastAccessTime != null) {
+			minutesDifference = lastAccessTime.until(LocalTime.now(), ChronoUnit.SECONDS);
+		}
 
-		long minutesDifference = lastAccessTime.until(LocalTime.now(), ChronoUnit.MINUTES);
-
-		if (cliente.getAccessCounter() >= 5 && minutesDifference < 2) {
+		
+		if (cliente.getAccessCounter() >= 2 && minutesDifference < 60) {
 			showLimitAccess = true;
 		} else if (password.equals(cliente.getPassword())) {
+			
 			response.sendRedirect("home.jsp");
-			ClienteDao clienteDao2 = new ClienteDao();
-			clienteDao2.updateAccessCounterToZero(cliente.getNif());
+			ClienteDao clienteDao3 = new ClienteDao();
+			clienteDao3.setClientAccessTime(null, cliente.getNif());
+			//Cuando cliente acceda correctamente siempre contador de acceso a cero.
+			ClienteDao clienteDao4 = new ClienteDao();
+			clienteDao4.updateAccessCounter(0, cliente.getNif());
 		} else {
 			showWrongAccess = true;
 		}

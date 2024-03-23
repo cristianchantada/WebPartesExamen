@@ -27,8 +27,13 @@ public class Cliente {
 		this.telefono = telefono;
 	}
 	
-	public Cliente(String nif, String nombre, String telefono, String password, LocalTime accessTime) {
+	public Cliente(String nif, String nombre, String telefono, String password, int accessCounter) {
 		this(nif, nombre, telefono, password);
+		this.accessCounter = accessCounter;
+	}
+	
+	public Cliente(String nif, String nombre, String telefono, String password, int accessCounter, LocalTime accessTime) {
+		this(nif, nombre, telefono, password, accessCounter);
 		this.accessTime = accessTime;
 	}
 

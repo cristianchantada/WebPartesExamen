@@ -1,0 +1,88 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+/* Estilos de los enlaces */
+ul {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Establece 3 columnas por fila */
+    grid-gap: 10px; /* Espacio entre las cajas */
+    list-style-type: none;
+    padding: 0;
+    margin: 50px 0; /* Reducción del espacio entre las listas y sus títulos */
+}
+
+.lists-ul a {
+	background-color: violet;
+}
+
+.other-functions-list {
+    display: flex;
+    justify-content: flex-end; /* Alinea los elementos al final */
+    grid-column: 1 / -1; /* Ocupa todas las columnas */
+}
+
+.other-functions-list li {
+    margin-bottom: 5px; /* Reducción del espacio entre los elementos */
+}
+
+.other-functions-list a {
+    display: block;
+    padding: 15px;
+    text-align: center;
+    text-decoration: none;
+    color: #fff; /* Cambio del color de texto */
+    background-color: #3498DB; /* Cambio del color de fondo */
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.other-functions-list a:hover {
+    background-color: #45a049; /* Cambio del color de fondo al pasar el mouse */
+}
+
+li {
+    margin-bottom: 5px; /* Reducción del espacio entre los enlaces */
+}
+
+.logout-list > li {
+	position: relative;
+	right: -250px;
+}
+
+.logout-list a {
+	color: white;
+	background-color: red;
+}
+
+a {
+    display: block;
+    padding: 15px;
+    text-align: center;
+    text-decoration: none;
+    color: #333;
+    background-color: #fff;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+a:hover {
+    background-color: #4CAF50;
+    color: white;
+}
+
+h1, h2 {
+    color: #4CAF50;
+    margin-bottom: 10px; /* Reducción del espacio entre los títulos */
+}

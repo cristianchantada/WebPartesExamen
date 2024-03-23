@@ -1,0 +1,56 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.main-page-container {
+    width: 100%;
+    max-width: 400px; /* Ancho máximo del contenedor del formulario */
+    margin: 50px auto; /* Centra el formulario horizontalmente */
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+}
+
+.main-page-container form {
+    display: flex;
+    flex-direction: column;
+}
+
+.main-page-container label {
+    margin-bottom: 5px;
+}
+
+.main-page-container input {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.main-page-container button {
+    padding: 10px 20px;
+    background-color: #3498DB;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.main-page-container button:hover {
+    background-color: #2980B9;
+}
+
+.error-message {
+    color: red;
+    margin-top: 10px;
+}
