@@ -84,7 +84,7 @@ th {
 }
 
 .boton-volver:hover {
-	background-color: #219653;
+	background-color:#3498DB;
 }
 
 a {
@@ -107,4 +107,19 @@ table {
 
 .container {
 	max-width: 90%;
+}
+
+button.boton-modificar {
+    padding: 10px 20px;
+    background-color: #27ae60;
+    color: #fff;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+button.boton-modificar:hover {
+    background-color: #3498DB;
 }

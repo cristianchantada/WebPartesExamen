@@ -119,9 +119,7 @@ public class ClienteDao implements DaoInterface<Cliente> {
 					newClient.setAccessTime(rs.getTime("accessTime").toLocalTime());
 				} else {
 					newClient.setAccessTime(LocalTime.now());
-				}
-				
-				
+				}				
 			} else {
 				System.out.println("No se encontró ningún empleado con el NIF proporcionado.");
 			}
@@ -131,36 +129,10 @@ public class ClienteDao implements DaoInterface<Cliente> {
 		} finally {
 			closeConnection();
 		}
-		
-		LocalTime clientAccessTime = newClient.getAccessTime();
-		LocalTime now = LocalTime.now();
-		
-		long secondsDifference = 0;
-		if(clientAccessTime != null) {
-			secondsDifference = clientAccessTime.until(now, ChronoUnit.SECONDS);
-		}
-			
-		// Cuando el cliente accede la primera vez, se establece el tiempo de acceso al actual y el contador a 1
-		if(newClient.getAccessCounter() <= 3 || secondsDifference > 120) {
-			ClienteDao clientDao = new ClienteDao();
-			clientDao.setClientAccessTime(LocalTime.now(), newClient.getNif());
-			newClient.setAccessTime(LocalTime.now());
-			//newClient.setAccessCounter(1);
-			
-		//Si cuando el cliente entre ya han pasado más de 120 segundos 
-	   // desde el primer acceso, el contador se sitúa en 1
-		} else if(/*clientAccessTime != null ||*/ secondsDifference > 120) {
-			ClienteDao clientDao2 = new ClienteDao();
-			clientDao2.updateAccessCounter(1, newClient.getNif());
-			ClienteDao clientDao3 = new ClienteDao();
-			clientDao3.setClientAccessTime(LocalTime.now(), newClient.getNif());
-		} 
-		
-		
 		return newClient;
 	}
 	
-	public void setClientAccessTime(LocalTime accessTime, String nif) {
+	public void updateClientAccessTime(LocalTime accessTime, String nif) {
 		
 		Time sqlTime = null;
 		if(accessTime != null) {
@@ -170,10 +142,7 @@ public class ClienteDao implements DaoInterface<Cliente> {
 		}
 		
 	    String sql = "UPDATE clientes SET accessTime = ? WHERE nif = ?";
-	    
-	    System.out.println("sqlTime clientAcessTime = " + sqlTime);
-	    
-	    
+
 	    try {
 	         preparedStatement = conn.prepareStatement(sql);
 	         preparedStatement.setTime(1, sqlTime);
@@ -182,7 +151,7 @@ public class ClienteDao implements DaoInterface<Cliente> {
 	         rowsAffected = preparedStatement.executeUpdate();
 
 	        if (rowsAffected <= 0) {
-	            Mensaje.verMensaje("No se encontró ningún cliente con el email proporcionado");
+	        	System.out.println("No se encontró ningún cliente con el NIF proporcionado");
 	        }
 	    } catch (SQLException e) {
 	        System.out.println("Error al actualizar el cliente en ClienteDao: " + e.getMessage());
@@ -237,7 +206,7 @@ public class ClienteDao implements DaoInterface<Cliente> {
 	        rowsAffected = preparedStatement.executeUpdate();
 
 	        if (rowsAffected <= 0) {
-	            Mensaje.verMensaje("No se encontró ningún cliente con el NIF proporcionado");
+	        	System.out.println("No se encontró ningún cliente con el NIF proporcionado");
 	        }
 	    } catch (SQLException e) {
 	        System.out.println("Error al actualizar el cliente en ClienteDao: " + e.getMessage());
@@ -256,12 +225,13 @@ public class ClienteDao implements DaoInterface<Cliente> {
 	         
 	        rowsAffected = preparedStatement.executeUpdate();
 	        if (rowsAffected <= 0) {
-	            Mensaje.verMensaje("No se encontró ningún cliente con el NIF proporcionado");
+	        	System.out.println("No se encontró ningún cliente con el NIF proporcionado");
 	        }
 	    } catch (SQLException e) {
 	        System.out.println("Error al actualizar el cliente en ClienteDao: " + e.getMessage());
 	    } finally {
 	        closeConnection();
+	        
 	    }
 	}
 

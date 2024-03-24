@@ -64,7 +64,7 @@
 		            <th>Nif</th>
 		            <th>Nombre</th>
 		            <th>Correo</th>
-		            <th>Email</th>
+		            <th>Teléfono</th>
             		<th></th>
 		            <th></th>
 		     	</tr>
@@ -105,7 +105,7 @@
 					<td></td>
 					<td></td>
 					<td>
-						<a href="index.jsp" class="boton-volver">Volver</a>
+						<a href="home.jsp" class="boton-volver">Volver</a>
 					</td>
 				</tr>
 			</tbody>

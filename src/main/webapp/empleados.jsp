@@ -56,7 +56,7 @@
 					<td></td>
 					<td></td>		
 					<td class="return-link">
-						<a href="index.jsp" class="boton-volver">Volver</a>
+						<a href="home.jsp" class="boton-volver">Volver</a>
 					</td>
 				</tr>
 			</tbody>

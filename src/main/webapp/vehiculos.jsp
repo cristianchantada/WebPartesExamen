@@ -49,7 +49,7 @@
 					<td></td>
 					<td></td>
 					<td>
-						<a href="index.jsp" class="boton-volver">Volver</a>
+						<a href="home.jsp" class="boton-volver">Volver</a>
 					</td>
 				</tr>
 			</tbody>

@@ -218,6 +218,6 @@
 <%
     }
 %>
-<a href="index.jsp" class="boton-volver">Volver</a>
+<a href="home.jsp" class="boton-volver">Volver</a>
 </body>
 </html>

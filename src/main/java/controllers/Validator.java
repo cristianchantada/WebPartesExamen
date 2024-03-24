@@ -14,12 +14,12 @@ public class Validator {
 		String message;
 		if (!nifMatcher.matches()) {
 			message = "Su DNI no contiene un formato válido, por favor, inténtelo de nuevo";
-			verMensaje(message);
+			//verMensaje(message);
 			return false;
 		} else {
 			if (!validateNifAlgorithm(nif)) {
 				message = "Su NIF no contiene un formato válido, por favor, inténtelo de nuevo";
-				verMensaje(message);
+				//verMensaje(message);
 				return false;
 			}
 		}
@@ -66,7 +66,7 @@ public class Validator {
 	public static boolean validarNombre(String nombre) {
 		Pattern pattern = Pattern.compile("^[a-zA-ZÁÉÍÓÚÜáéíóúüÑñ\s]*$");
 		Matcher matcher = pattern.matcher(nombre);
-		return matcher.matches();
+		return matcher.matches() && !nombre.isEmpty();
 	}
 
 	public static boolean validarCodigoOperario(String codigoOperario) {

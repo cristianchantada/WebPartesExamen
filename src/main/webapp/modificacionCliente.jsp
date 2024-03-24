@@ -17,6 +17,12 @@
 	String email = request.getParameter("clientEmail");
 	String phone = request.getParameter("clientPhone");
 	String name = request.getParameter("clientName");
+	
+	boolean wrongNif = false;
+	boolean wrongEmail = false;
+	boolean wrongName = false;
+	boolean wrongPhone = false;
+	boolean repeatedClient = false;
 
 	Cliente client = new Cliente(request.getParameter("clientNif"));
 	Cliente clientWithOldNif = new Cliente(request.getParameter("clientOldNif"));
@@ -32,31 +38,36 @@
 
 		if (Cliente.clienteExiste(nif, clientsList)) {
 			System.out.println("El cliente existe en la BD");
-			if (Cliente.clienteExisteNifReturn(nif, clientsList).equals(client.getNif())) {
-		System.out.println("El cliente está repetido");
-		Mensaje.verMensaje("Este cliente ya existe en la BD, no puede volver a insertarlo");
-		checker = false;
+			
+			String recoveredNif = Cliente.clienteExisteNifReturn(nif, clientsList);
+			System.out.println("recoveredNif = " + recoveredNif);
+			System.out.println("client.getNif() = " + client.getNif());
+			
+			if (!recoveredNif.equals(clientWithOldNif.getNif())) {
+				System.out.println("El cliente está repetido");
+				repeatedClient = true;
+				checker = false;
 			}
 			System.out.println("Actualizamos el cliente sin cambiar su DNI");
 		}
 
 		if (!Validator.nifValidator(nif)) {
-			Mensaje.verMensaje("El NIF no es correcto, por favor, buelva a intentarlo");
+			wrongNif = true;
 			checker = false;
 		}
 
 		if (!Validator.emailValidator(email)) {
-			Mensaje.verMensaje("El formato de email no es válido, por favor, vuelva a introducirlo");
+			wrongEmail = true;
 			checker = false;
 		}
 
 		if (!Validator.phoneValidator(phone)) {
-			Mensaje.verMensaje("El número de teléfono no es válido, por favor, vuelva a introducirlo");
+			wrongPhone = true;
 			checker = false;
 		}
 
 		if (!Validator.validarNombre(name)) {
-			Mensaje.verMensaje("El nombre del cliente no es válido, por favor, inténtelo de nuevo");
+			wrongName = true;
 			checker = false;
 		}
 
@@ -68,20 +79,22 @@
 
 			String[] modifiedData = { name, email, phone, nif };
 			clientDao3.update(clientWithOldNif, modifiedData);
-			Mensaje.verMensaje("Cliente actualizado correctamente");
-
+			response.sendRedirect("clientes.jsp");
+		} else {
+			client.setNif(clientWithOldNif.getNif());
+			client.setNombre(name);
+			client.setCorreo(email);
+			client.setTelefono(phone);
 		}
-		response.sendRedirect("clientes.jsp");
 	}
 	%>
 	<div>
 		<table>
 			<thead>
 				<tr>
-					<th>Datos cliente</th>
+					<th coolspan="2">Datos cliente</th>
 					<th></th>
-					<th></th>
-					<th></th>
+
 				</tr>
 			</thead>
 			<tbody>
@@ -116,20 +129,39 @@
 
 					<tr>
 						<td>
-
-							<button type="submit">Modificar usuario</button>
-
+							<button type="submit" class="boton-modificar">Modificar usuario</button>
 						</td>
 				</form>
 				</tr>
 				<tr>
 					<td></td>
-					<td></td>
-					<td></td>
+
+
 					<td><a href="clientes.jsp" class="boton-volver">Volver</a></td>
 				</tr>
 			</tbody>
 		</table>
+		
+ 		 <% if(repeatedClient){ %>
+			<p style="color: red;">Este cliente ya existe en la BD, no puede volver a insertarlo</p>
+		 <%}%>
+		
+		 <% if(wrongNif){ %>
+			<p style="color: red;">El formato del NIF no es correcto, por favor, vuelva a intentarlo</p>
+		 <%}%>
+		 
+ 		 <% if(wrongName){ %>
+			<p style="color: red;">El nombre de usuario no puede contener dígitos ni estar vacío</p>
+		 <%}%>
+		 
+ 		 <% if(wrongEmail){ %>
+			<p style="color: red;">El formato del email no es correcto, por favor, vuelva a intentarlo</p>
+		 <%}%>
+		 
+ 		 <% if(wrongPhone){ %>
+			<p style="color: red;">El formato de teléfono no es correcto, por favor, vuelva a intentarlo</p>
+		 <%}%>
+		
 	</div>
 </body>
 </html>

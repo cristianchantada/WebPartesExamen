@@ -25,35 +25,45 @@
 
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
-
-		ClienteDao clienteDao = new ClienteDao();
-		Cliente cliente = new Cliente();
-		cliente = clienteDao.getClientByEmail(email);
-		ClienteDao clienteDao2 = new ClienteDao();
-		clienteDao2.updateAccessCounter((cliente.getAccessCounter() + 1), cliente.getNif());
-
-		LocalTime lastAccessTime = cliente.getAccessTime();
 		
-		long minutesDifference = 0;
-		if (lastAccessTime != null) {
+		Cliente cliente = new Cliente();
+		ClienteDao clienteDao = new ClienteDao();
+		cliente = clienteDao.getClientByEmail(email);
+				
+		LocalTime lastAccessTime = cliente.getAccessTime();
+		long minutesDifference;
+		
+		if(lastAccessTime != null){
 			minutesDifference = lastAccessTime.until(LocalTime.now(), ChronoUnit.SECONDS);
+		} else {
+			minutesDifference = 0;
 		}
 
-		
-		if (cliente.getAccessCounter() >= 2 && minutesDifference < 60) {
+		int accessCounter = 0;
+		// Si han pasado más de 5 minutos desde el último acceso fallido,
+		// el contador de entradas fallidas se setea a cero siempre.
+		if(minutesDifference > 120){		
+			accessCounter = 0;
+			cliente.setAccessCounter(0);
+		}
+	
+		if (cliente.getAccessCounter() >= 5 && minutesDifference < 120) {
 			showLimitAccess = true;
-		} else if (password.equals(cliente.getPassword())) {
-			
-			response.sendRedirect("home.jsp");
-			ClienteDao clienteDao3 = new ClienteDao();
-			clienteDao3.setClientAccessTime(null, cliente.getNif());
-			//Cuando cliente acceda correctamente siempre contador de acceso a cero.
-			ClienteDao clienteDao4 = new ClienteDao();
-			clienteDao4.updateAccessCounter(0, cliente.getNif());
+			accessCounter = 5;
+		} else if (password.equals(cliente.getPassword())) {			
+			response.sendRedirect("home.jsp");			
+			// Siempre que entremos correctamente a la web, el contador de accesos se setea a cero
+			accessCounter = 0;
 		} else {
 			showWrongAccess = true;
+			accessCounter = cliente.getAccessCounter() + 1;
+			ClienteDao clienteDao2 = new ClienteDao();
+			clienteDao2.updateClientAccessTime(LocalTime.now(),  cliente.getNif());
 		}
+		ClienteDao clienteDao3 = new ClienteDao();
+		clienteDao3.updateAccessCounter(accessCounter, cliente.getNif());
 	}
+	
 	%>
 	<div class="main-page-container">
 		<form action="index.jsp" method="POST">
@@ -66,12 +76,13 @@
 	<%
 	if (showLimitAccess) {
 	%>
-	<p>Se ha alcanzado el límite de intentos o debes esperar al menos 2
-		minutos entre intentos de acceso.</p>
+	<p style="color: red;">Se ha alcanzado el límite de intentos, debes esperar al menos 2 minutos para volver a intentarlo</p>
+
 	<%
 	} else if (showWrongAccess) {
 	%>
-	<p>Email o contraseña incorrecta, por favor, inténtelo de nuevo</p>
+	<p style="color: red;">Email o contraseña incorrecta, por favor, inténtelo de nuevo</p>
+
 	<%
 	}
 	%>
